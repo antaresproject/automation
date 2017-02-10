@@ -1,0 +1,13 @@
+{
+    "name": "components/automation",
+    "description": "Antares Automation Component",
+    "authors": [
+        {
+            "name": "Łukasz Cirut",
+            "email": "contact@antaresproject.io"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.1"
+    }
+}
