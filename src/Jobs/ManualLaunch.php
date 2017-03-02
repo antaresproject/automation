@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Jobs;
 
@@ -62,10 +60,12 @@ class ManualLaunch implements ShouldQueue
      */
     public function handle()
     {
+        set_time_limit(0);
         $before  = microtime(true);
         $artisan = base_path('artisan');
         $command = $this->command;
         $process = new Process("php {$artisan} {$command}");
+        $process->setTimeout(4000);
         $process->run();
         $after   = microtime(true);
         $runtime = $after - $before;
