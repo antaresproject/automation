@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Http\Handlers;
 
@@ -51,7 +49,7 @@ class AutomationLogsBreadcrumbMenu extends MenuHandler
      */
     public function getTitleAttribute($value)
     {
-        return trans('antares/automation::messages.breadcrumb.automation_logs');
+        return trans('antares/automation::messages.breadcrumb.automation_log');
     }
 
     /**

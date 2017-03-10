@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Automation\Http\Breadcrumb;
 
 use DaveJamesMiller\Breadcrumbs\Facade as Breadcrumbs;
@@ -35,7 +33,7 @@ class Breadcrumb
     {
         if (!Breadcrumbs::exists('automations')) {
             Breadcrumbs::register('automations', function($breadcrumbs) {
-                $breadcrumbs->push('Automation logs', handles('antares::automation/index'));
+                $breadcrumbs->push(trans('antares/automation::messages.automation_log'), handles('antares::automation/index'));
             });
             view()->share('breadcrumbs', Breadcrumbs::render('automations'));
         }
