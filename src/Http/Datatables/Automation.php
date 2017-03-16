@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Http\Datatables;
 
@@ -54,10 +52,10 @@ class Automation extends DataTable
     {
         $builder = app(Jobs::class)->select(['tbl_jobs.*'])->with('jobResults', 'component', 'category');
         if (!request()->ajax()) {
-            return
-                    $builder->whereHas('category', function($query) {
-                        $query->where('name', 'custom');
-                    });
+            //return
+//                    $builder->whereHas('category', function($query) {
+//                        $query->where('name', 'custom');
+//                    });
         } else {
             $columns = request('columns');
             $search  = '';
@@ -189,7 +187,6 @@ class Automation extends DataTable
      */
     public function html()
     {
-        publish('automation', ['js/automation-table.js']);
         return $this->setName('Automation List')
                         ->addColumn(['data' => 'id', 'name' => 'id', 'title' => trans('Id')])
                         ->addColumn(['data' => 'title', 'name' => 'title', 'title' => trans('antares/automation::messages.datatable.headers.script_name'), 'className' => 'bolded'])
@@ -201,19 +198,23 @@ class Automation extends DataTable
                         ->addColumn(['data' => 'last_run_result', 'name' => 'last_run_result', 'title' => trans('antares/automation::messages.datatable.headers.last_run_result')])
                         ->addAction(['name' => 'edit', 'title' => '', 'class' => 'mass-actions dt-actions', 'orderable' => false, 'searchable' => false])
                         ->setDeferedData()
-                        ->addGroupSelect($this->categoriesSelect());
+                        ->addGroupSelect($this->categories(), 2, $this->findCustomOptionId(), ['data-prefix' => trans('antares/automation::messages.datatable.select_category')]);
     }
 
     /**
-     * Creates select for categories
+     * Creates options for automation table categories
      * 
-     * @return String
+     * @return Collection
      */
-    protected function categoriesSelect()
+    protected function categories(): \Illuminate\Support\Collection
     {
-        $options         = JobsCategory::all(['id', 'title'])->lists('title', 'id');
-        $defaultSelected = $this->findCustomOptionId();
-        return Form::select('category', ['all' => trans('antares/automation::messages.datatable.select_all')] + $options->toArray(), $defaultSelected, ['data-prefix' => trans('antares/automation::messages.datatable.select_category'), 'data-selectAR--mdl-big' => "true", 'class' => 'automation-select-category select2--prefix']);
+
+        $options = JobsCategory::all(['id', 'title'])->lists('title', 'id');
+        return $options->prepend(trans('antares/automation::messages.datatable.select_all'), 'all');
+
+//        $defaultSelected = $this->findCustomOptionId();
+//        return 
+//        return Form::select('category', ['all' => trans('antares/automation::messages.datatable.select_all')] + $options->toArray(), $defaultSelected, ['data-prefix' => trans('antares/automation::messages.datatable.select_category'), 'data-selectAR--mdl-big' => "true", 'class' => 'automation-select-category select2--prefix']);
     }
 
     /**

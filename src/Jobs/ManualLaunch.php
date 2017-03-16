@@ -72,4 +72,14 @@ class ManualLaunch implements ShouldQueue
         app(Reports::class)->saveReport($command, $runtime, $process);
     }
 
+    /**
+     * Command name getter
+     * 
+     * @return String
+     */
+    public function getCommand(): String
+    {
+        return $this->command;
+    }
+
 }
