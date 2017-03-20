@@ -24,7 +24,6 @@ use Antares\Automation\Filter\AutomationStatusFilter;
 use Antares\Datatables\Services\DataTable;
 use Antares\Automation\Model\JobsCategory;
 use Antares\Automation\Model\Jobs;
-use Antares\Support\Facades\Form;
 
 class Automation extends DataTable
 {
@@ -50,26 +49,22 @@ class Automation extends DataTable
      */
     public function query()
     {
+
         $builder = app(Jobs::class)->select(['tbl_jobs.*'])->with('jobResults', 'component', 'category');
-        if (!request()->ajax()) {
-            //return
-//                    $builder->whereHas('category', function($query) {
-//                        $query->where('name', 'custom');
-//                    });
-        } else {
-            $columns = request('columns');
-            $search  = '';
-            array_walk($columns, function($item, $index) use(&$search) {
-                if (array_get($item, 'data') == 'category_id') {
-                    $search = array_get($item, 'search.value');
-                }
-            });
-            if (!$search) {
-                $builder->whereHas('category', function($query) {
-                    $query->where('name', 'custom');
-                });
-            }
-        }
+
+        listen('datatables.order.title', function($query, $direction) {
+            return $query->leftJoin('tbl_components', 'tbl_jobs.component_id', '=', 'tbl_components.id')
+                            ->orderBy('tbl_components.full_name', $direction);
+        });
+        listen('datatables.order.last_run_result', function($query, $direction) {
+            return $query->leftJoin('tbl_job_results', 'tbl_jobs.id', '=', 'tbl_job_results.job_id')
+                            ->orderBy('tbl_job_results.has_error', $direction);
+        });
+        listen('datatables.order.last_run', function($query, $direction) {
+            return $query->leftJoin('tbl_job_results', 'tbl_jobs.id', '=', 'tbl_job_results.job_id')
+                            ->orderBy('tbl_job_results.created_at', $direction);
+        });
+
         return $builder;
     }
 
@@ -192,7 +187,7 @@ class Automation extends DataTable
                         ->addColumn(['data' => 'title', 'name' => 'title', 'title' => trans('antares/automation::messages.datatable.headers.script_name'), 'className' => 'bolded'])
                         ->addColumn(['data' => 'category_id', 'name' => 'category_id', 'title' => trans('antares/automation::messages.datatable.headers.category')])
                         ->addColumn(['data' => 'active', 'name' => 'active', 'title' => trans('antares/automation::messages.datatable.headers.status')])
-                        ->addColumn(['data' => 'description', 'name' => 'description', 'title' => trans('antares/automation::messages.datatable.headers.description')])
+                        ->addColumn(['data' => 'description', 'name' => 'description', 'title' => trans('antares/automation::messages.datatable.headers.description'), 'orderable' => false])
                         ->addColumn(['data' => 'interval', 'name' => 'active', 'title' => trans('antares/automation::messages.datatable.headers.interval')])
                         ->addColumn(['data' => 'last_run', 'name' => 'last_run', 'title' => trans('antares/automation::messages.datatable.headers.last_run')])
                         ->addColumn(['data' => 'last_run_result', 'name' => 'last_run_result', 'title' => trans('antares/automation::messages.datatable.headers.last_run_result')])
