@@ -1,6 +1,8 @@
 {
     "name": "antaresproject/component-automation",
     "description": "Antares Automation Component",
+    "type": "antaresproject-component",
+    "version": "0.9.2",
     "authors": [
         {
             "name": "Łukasz Cirut",
@@ -9,5 +11,10 @@
     ],
     "require": {
         "php": ">=7.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Antares\\Automation\\": "src/"
+        }
     }
 }
