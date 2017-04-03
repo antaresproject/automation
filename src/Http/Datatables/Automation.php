@@ -204,7 +204,7 @@ class Automation extends DataTable
     protected function categories(): \Illuminate\Support\Collection
     {
 
-        $options = JobsCategory::all(['id', 'title'])->lists('title', 'id');
+        $options = JobsCategory::all(['id', 'title'])->pluck('title', 'id');
         return $options->prepend(trans('antares/automation::messages.datatable.select_all'), 'all');
 
 //        $defaultSelected = $this->findCustomOptionId();
