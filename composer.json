@@ -9,6 +9,9 @@
             "email": "contact@antaresproject.io"
         }
     ],
+    "extra": {
+        "class": "Installer\\Composer\\Extension\\ComponentPlugin"
+    },
     "require": {
         "php": ">=7.0.1"
     },
