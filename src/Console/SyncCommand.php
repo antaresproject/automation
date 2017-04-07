@@ -1,6 +1,7 @@
 <?php
 
-/**
+
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -23,12 +24,12 @@
 namespace Antares\Automation\Console;
 
 use Antares\Automation\Model\JobsCategory;
+use Antares\Extension\FilesystemFinder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Antares\Automation\Model\Jobs;
 use Antares\View\Console\Command;
-use Antares\Extension\Finder;
 use Antares\Support\Str;
 use ReflectionClass;
 use Exception;
@@ -51,9 +52,9 @@ class SyncCommand extends Command
     protected $filesystem;
 
     /**
-     * Finder instance
+     * Manager instance
      *
-     * @var Finder 
+     * @var FilesystemFinder
      */
     protected $finder;
 
@@ -112,7 +113,7 @@ class SyncCommand extends Command
     {
         parent::__construct();
         $this->filesystem = app(Filesystem::class);
-        $this->finder     = app(Finder::class);
+        $this->finder     = app(FilesystemFinder::class);
         $this->ignored    = config('antares/automation::ignored');
     }
 
