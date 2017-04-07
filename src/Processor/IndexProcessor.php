@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Processor;
 
@@ -116,7 +114,7 @@ class IndexProcessor extends Processor
     public function update(IndexListener $listener)
     {
         $id    = Input::get('id');
-        $model = app('Antares\Automation\Model\Jobs')->where('id', $id)->first();
+        $model = app('Antares\Automation\Model\Jobs')->where('id', $id)->firstOrFail();
         $form  = $this->presenter->form($model);
         if (!$form->isValid()) {
             return $listener->updateValidationFailed($id, $form->getMessageBag());

@@ -103,7 +103,7 @@ class IndexProcessorTest extends ApplicationTestCase
 //        $builder->setModel($model);
 //        $model->shouldReceive('all')->withNoArgs()->andReturn($builder);
 //
-//        $this->app['view']->addNamespace('antares/automation', realpath(base_path() . '../../../../components/automation/resources/views'));
+        $this->app['view']->addNamespace('antares/automation', realpath(base_path() . '../../../../components/automation/resources/views'));
     }
 
     /**
@@ -122,19 +122,14 @@ class IndexProcessorTest extends ApplicationTestCase
      */
     protected function getPresenter()
     {
-//        $htmlBuilder                 = $this->app->make('Collective\Html\HtmlBuilder');
-//        $formBuilder                 = $this->app->make('Antares\Html\Support\FormBuilder');
-//        $filterAdapter               = $this->app->make(\Antares\Datatables\Adapter\FilterAdapter::class);
-//        $router                      = $this->app->make(\Illuminate\Routing\Router::class);
-//        $dispatcher                  = $this->app->make(\Illuminate\Events\Dispatcher::class);
+
         $breadcrumb = m::mock(\Antares\Automation\Http\Breadcrumb\Breadcrumb::class);
-        $breadcrumb->shouldReceive('onList')->withNoArgs()->once()->andReturn(null);
+        $breadcrumb->shouldReceive('onList')->withNoArgs()->andReturn(null)
+                ->shouldReceive('onShow')->withAnyArgs()->andReturn(null)
+                ->shouldReceive('onEdit')->withAnyArgs()->andReturn(null);
 
         $automationDatatables        = $this->app->make(\Antares\Automation\Http\Datatables\Automation::class);
         $automationDetailsDatatables = $this->app->make(\Antares\Automation\Http\Datatables\AutomationDetails::class);
-        //$this->app['view']->addNamespace('unit', __DIR__);
-//        $urlGenerator                = url();
-        //$builder = new Builder2($this->app['config'], $this->app['view'], $htmlBuilder, $urlGenerator, $formBuilder, $filterAdapter, $router, $dispatcher);
         return new IndexPresenter($this->app, $breadcrumb, $automationDatatables, $automationDetailsDatatables);
     }
 
@@ -163,9 +158,8 @@ class IndexProcessorTest extends ApplicationTestCase
      */
     public function testShow()
     {
-        $stub          = $this->getStub();
-        $indexListener = m::mock(IndexListener::class);
-        $this->assertInstanceOf(View::class, $stub->show($this->app->make('request'), $indexListener, 0));
+        $stub = $this->getStub();
+        $this->assertInstanceOf(View::class, $stub->show(1));
     }
 
     /**
@@ -175,11 +169,13 @@ class IndexProcessorTest extends ApplicationTestCase
     {
         $stub          = $this->getStub();
         $indexListener = m::mock(IndexListener::class);
-        $this->assertInstanceOf(View::class, $stub->edit(0, $indexListener));
+        $this->assertInstanceOf(View::class, $stub->edit(1, $indexListener));
     }
 
     /**
      * Tests Antares\Automation\Processor\IndexProcessor::update
+     * 
+     * @expectedException  \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function testUpdate()
     {
