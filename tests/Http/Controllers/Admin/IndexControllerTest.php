@@ -20,15 +20,16 @@
 
 namespace Antares\Automation\Http\Controllers\Admin\TestCase;
 
+use Antares\Testing\ApplicationTestCase;
 use Antares\Automation\AutomationServiceProvider;
 use Antares\Automation\Http\Presenters\IndexPresenter;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Antares\Automation\Processor\IndexProcessor;
 use Antares\Testing\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\View\View;
 use Mockery as m;
 
-class IndexControllerTest extends TestCase
+class IndexControllerTest extends ApplicationTestCase
 {
 
     use WithoutMiddleware;
@@ -40,6 +41,7 @@ class IndexControllerTest extends TestCase
     {
         $this->addProvider(AutomationServiceProvider::class);
         parent::setUp();
+
         $this->disableMiddlewareForAllTests();
     }
 
@@ -63,7 +65,7 @@ class IndexControllerTest extends TestCase
     public function testIndex()
     {
         $this->getProcessorMock()->shouldReceive('index')->once()->andReturn(View::class);
-        $this->call('GET', 'admin/automation');
+        $this->call('GET', 'antares/automation/index');
         $this->assertResponseOk();
     }
 
@@ -73,7 +75,7 @@ class IndexControllerTest extends TestCase
     public function testShow()
     {
         $this->getProcessorMock()->shouldReceive('show')->once()->andReturn(View::class);
-        $this->call('GET', 'admin/automation/show/1');
+        $this->call('GET', 'antares/automation/show/1');
         $this->assertResponseOk();
     }
 
@@ -86,7 +88,7 @@ class IndexControllerTest extends TestCase
                 ->andReturnUsing(function ($request, $listener) {
                     return $listener->showFailed();
                 });
-        $this->call('GET', 'admin/automation/show/1');
+        $this->call('GET', 'antares/automation/show/1');
         $this->assertResponseStatus(302);
     }
 
@@ -96,7 +98,7 @@ class IndexControllerTest extends TestCase
     public function testEdit()
     {
         $this->getProcessorMock()->shouldReceive('edit')->once()->andReturn(View::class);
-        $this->call('GET', 'admin/automation/edit/1');
+        $this->call('GET', 'antares/automation/edit/1');
         $this->assertResponseOk();
     }
 
@@ -108,7 +110,7 @@ class IndexControllerTest extends TestCase
         $this->getProcessorMock()->shouldReceive('edit')->once()->andReturnUsing(function ($id, $listener) {
             return $listener->updateSuccess();
         });
-        $this->call('POST', 'admin/automation/update');
+        $this->call('POST', 'antares/automation/update');
         $this->assertResponseStatus(200);
     }
 
@@ -120,7 +122,7 @@ class IndexControllerTest extends TestCase
         $this->getProcessorMock()->shouldReceive('edit')->once()->andReturnUsing(function ($id, $listener) {
             return $listener->updateFailed();
         });
-        $this->call('POST', 'admin/automation/update');
+        $this->call('POST', 'antares/automation/update');
         $this->assertResponseStatus(200);
     }
 
@@ -132,7 +134,7 @@ class IndexControllerTest extends TestCase
         $this->getProcessorMock()->shouldReceive('edit')->once()->andReturnUsing(function ($id, $listener) {
             return $listener->updateSuccess();
         });
-        $this->call('POST', 'admin/automation/update');
+        $this->call('POST', 'antares/automation/update');
         $this->assertResponseStatus(200);
     }
 
@@ -144,7 +146,7 @@ class IndexControllerTest extends TestCase
         $this->getProcessorMock()->shouldReceive('run')->once()->andReturnUsing(function ($id, $listener) {
             return $listener->updateSuccess();
         });
-        $this->call('GET', 'admin/automation/run/1');
+        $this->call('GET', 'antares/automation/run/1');
         $this->assertResponseStatus(302);
     }
 
@@ -156,7 +158,7 @@ class IndexControllerTest extends TestCase
         $this->getProcessorMock()->shouldReceive('run')->once()->andReturnUsing(function ($id, $listener) {
             return $listener->updateSuccess();
         });
-        $this->call('GET', 'admin/automation/run/1');
+        $this->call('GET', 'antares/automation/run/1');
         $this->assertResponseStatus(302);
     }
 
@@ -168,7 +170,7 @@ class IndexControllerTest extends TestCase
         $this->getProcessorMock()->shouldReceive('run')->once()->andReturnUsing(function ($id, $listener) {
             return $listener->updateFailed();
         });
-        $this->call('GET', 'admin/automation/run/1');
+        $this->call('GET', 'antares/automation/run/1');
         $this->assertResponseStatus(302);
     }
 

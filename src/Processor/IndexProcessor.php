@@ -78,14 +78,16 @@ class IndexProcessor extends Processor
     }
 
     /**
-     * shows job details
+     * Shows job details
      * 
+     * @param mixed $id
+     * @param IndexListener $listener
      * @return View
      */
-    public function show($id)
+    public function show($id, IndexListener $listener)
     {
-        $model = app('Antares\Automation\Model\Jobs')->where('id', $id)->first();
-        return $this->presenter->tableShow($model);
+        $model = app('Antares\Automation\Model\Jobs')->whereId($id)->first();
+        return is_null($model) ? $listener->showFailed() : $this->presenter->tableShow($model);
     }
 
     /**
