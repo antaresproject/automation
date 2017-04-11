@@ -20,12 +20,11 @@
 
 namespace Antares\Automation\Http\Controllers\Admin\TestCase;
 
-use Antares\Testing\ApplicationTestCase;
-use Antares\Automation\AutomationServiceProvider;
 use Antares\Automation\Http\Presenters\IndexPresenter;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Antares\Automation\AutomationServiceProvider;
 use Antares\Automation\Processor\IndexProcessor;
-use Antares\Testing\TestCase;
+use Antares\Testing\ApplicationTestCase;
 use Illuminate\View\View;
 use Mockery as m;
 
