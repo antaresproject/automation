@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Http\Controllers\Admin;
 
@@ -72,7 +70,7 @@ class IndexController extends AdminController implements IndexListener
      */
     public function show($id)
     {
-        return $this->processor->show($id);
+        return $this->processor->show($id, $this);
     }
 
     /**

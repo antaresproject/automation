@@ -49,7 +49,6 @@ class Automation extends DataTable
      */
     public function query()
     {
-
         $builder = app(Jobs::class)->select(['tbl_jobs.*'])->with('jobResults', 'component', 'category');
 
         listen('datatables.order.title', function($query, $direction) {
@@ -141,6 +140,9 @@ class Automation extends DataTable
                             return $model->value['description'];
                         })
                         ->editColumn('category_id', function ($model) {
+                            if (is_null($model->category)) {
+                                return '---';
+                            }
                             return $model->category->title;
                         })
                         ->editColumn('last_run_result', function ($model) {
@@ -204,7 +206,7 @@ class Automation extends DataTable
     protected function categories(): \Illuminate\Support\Collection
     {
 
-        $options = JobsCategory::all(['id', 'title'])->lists('title', 'id');
+        $options = JobsCategory::all(['id', 'title'])->pluck('title', 'id');
         return $options->prepend(trans('antares/automation::messages.datatable.select_all'), 'all');
 
 //        $defaultSelected = $this->findCustomOptionId();

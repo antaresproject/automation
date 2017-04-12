@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Part of the Antares Project package.
  *
@@ -19,10 +18,9 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Automation\Console;
 
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Antares\Automation\Model\JobsCategory;
 use Antares\Extension\FilesystemFinder;
 use Illuminate\Filesystem\Filesystem;
@@ -238,7 +236,7 @@ class SyncCommand extends Command
         $commands = $this->findJobs(base_path('src/core'));
         foreach ($memory as $extension) {
             $directory = $this->finder->resolveExtensionPath($extension['path']) . DIRECTORY_SEPARATOR . 'src';
-            $commands  += $this->findJobs($directory);
+            $commands  += $this->findJobs($directory, ['testbench', 'tests', 'testing']);
         }
         if (empty($commands)) {
             $this->line('No jobs found.');
@@ -270,18 +268,17 @@ class SyncCommand extends Command
      * finds job instances in directory
      * 
      * @param String $directory
-     * @return string
+     * @param array $exclude
+     * @return String
      */
-    protected function findJobs($directory)
+    protected function findJobs($directory, array $exclude = [])
     {
-
         $componentId = $this->findComponentId($directory);
         $commands    = [];
-        $filesystem  = app(Filesystem::class);
         if (!is_dir($directory)) {
             return $commands;
         }
-        $files = $filesystem->allFiles($directory);
+        $files = iterator_to_array(SymfonyFinder::create()->files()->ignoreDotFiles(true)->in($directory)->exclude('testbench')->exclude('testing')->exclude('tests'), false);
         foreach ($files as $file) {
             $extension = $file->getExtension();
             if ($extension != 'php') {
