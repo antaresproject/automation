@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,9 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
-
 return [
     'disabled'                    => 'Disabled',
     'enabled'                     => 'Enabled',
@@ -28,7 +25,7 @@ return [
     'select_date_range'           => 'select date range...',
     'confirm'                     => 'Confirm',
     'datatable'                   => [
-        'select_category' => 'Category',
+        'select_category' => 'Category:',
         'select_all'      => 'All',
         'headers'         => [
             'script_name'     => 'Script name',
@@ -67,7 +64,7 @@ return [
         'yearly'             => 'Yearly'
     ],
     'breadcrumb'                  => [
-        'automation_logs'          => 'Automation Logs',
+        'automation_log'           => 'Automation Log',
         'automation_logs_download' => 'Download',
         'automation_logs_delete'   => 'Delete'
     ],
@@ -79,5 +76,6 @@ return [
     'delete_logs_ask'             => 'Are you sure?',
     'automation_delete_success'   => 'Automation logs has been deleted.',
     'automation_delete_error'     => 'Automation logs has not been deleted.',
-    'automation_delete_no_logs'   => 'Nothing to delete. There are no automation logs in specified date range.'
+    'automation_delete_no_logs'   => 'Nothing to delete. There are no automation logs in specified date range.',
+    'automation_log'              => 'Automation log'
 ];

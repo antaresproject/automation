@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Processor;
 
@@ -80,14 +78,16 @@ class IndexProcessor extends Processor
     }
 
     /**
-     * shows job details
+     * Shows job details
      * 
+     * @param mixed $id
+     * @param IndexListener $listener
      * @return View
      */
-    public function show($id)
+    public function show($id, IndexListener $listener)
     {
-        $model = app('Antares\Automation\Model\Jobs')->where('id', $id)->first();
-        return $this->presenter->tableShow($model);
+        $model = app('Antares\Automation\Model\Jobs')->whereId($id)->first();
+        return is_null($model) ? $listener->showFailed() : $this->presenter->tableShow($model);
     }
 
     /**
@@ -116,7 +116,7 @@ class IndexProcessor extends Processor
     public function update(IndexListener $listener)
     {
         $id    = Input::get('id');
-        $model = app('Antares\Automation\Model\Jobs')->where('id', $id)->first();
+        $model = app('Antares\Automation\Model\Jobs')->where('id', $id)->firstOrFail();
         $form  = $this->presenter->form($model);
         if (!$form->isValid()) {
             return $listener->updateValidationFailed($id, $form->getMessageBag());

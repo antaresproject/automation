@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -18,14 +18,12 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Automation\TestCase;
 
-use Mockery as m;
-use Antares\Testing\TestCase;
-use Antares\Automation\AutomationServiceProvider;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Antares\Automation\AutomationServiceProvider;
+use Antares\Testing\TestCase;
+use Mockery as m;
 
 class AutomationServiceProviderTest extends TestCase
 {

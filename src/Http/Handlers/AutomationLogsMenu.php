@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Automation\Http\Handlers;
 
 use Antares\Contracts\Auth\Guard;
@@ -34,10 +32,19 @@ class AutomationLogsMenu extends MenuHandler
      * @var array
      */
     protected $menu = [
-        'id'    => 'automation-logs',
-        'title' => 'Automation Logs',
-        'link'  => 'antares::automations/logs/index'
+        'id'   => 'automation-logs',
+        'link' => 'antares::automations/logs/index'
     ];
+
+    /**
+     * Gets title attribute
+     * 
+     * @return String
+     */
+    public function getTitleAttribute()
+    {
+        return trans('antares/automation::messages.automation_log');
+    }
 
     /**
      * Get position.

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Model\TestCase;
 
@@ -95,7 +93,8 @@ class SyncCommandTest extends TestCase
         $command    = new SyncCommand();
         $command->setOutput($outputMock = m::mock(OutputStyle::class));
         $info       = '<info>No jobs found.</info>';
-        $outputMock->shouldReceive('writeln')->with($info, 32)->once()->andReturn($info);
+        $outputMock->shouldReceive('writeln')->withAnyArgs()->once()->andReturn($info);
+
         $this->assertNull($command->handle());
     }
 

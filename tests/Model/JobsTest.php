@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Model\TestCase;
 
@@ -73,7 +71,7 @@ class JobsTest extends TestCase
      */
     public function testHasValidMorhClass()
     {
-        $this->assertSame($this->model->getMorphClass(), 'Jobs');
+        $this->assertSame($this->model->getMorphClass(), 'Antares\Automation\Model\Jobs');
     }
 
     /**
