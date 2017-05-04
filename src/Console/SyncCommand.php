@@ -232,12 +232,17 @@ class SyncCommand extends Command
      */
     protected function scan()
     {
-        $memory   = app('antares.memory')->make('component')->get('extensions.active');
+        $extensions = app('antares.extension')->getAvailableExtensions();
+
         $commands = $this->findJobs(base_path('src/core'));
-        foreach ($memory as $extension) {
-            $directory = $this->finder->resolveExtensionPath($extension['path']) . DIRECTORY_SEPARATOR . 'src';
-            $commands  += $this->findJobs($directory, ['testbench', 'tests', 'testing']);
+
+        foreach ($extensions as $extension) {
+            if (!$extension->isActivated()) {
+                continue;
+            }
+            $commands += $this->findJobs($extension->getPath(), ['testbench', 'tests', 'testing']);
         }
+
         if (empty($commands)) {
             $this->line('No jobs found.');
             return [];
@@ -253,13 +258,15 @@ class SyncCommand extends Command
      */
     protected function findComponentId($directory)
     {
+
         $componentId  = null;
-        $manifestPath = $directory . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'manifest.json';
-        if (!$this->filesystem->exists($manifestPath)) {
-            $componentId = $this->components['acl_antares'];
+        $composerPath = $directory . DIRECTORY_SEPARATOR . 'composer.json';
+
+        if (!$this->filesystem->exists($composerPath)) {
+            $componentId = $this->components['core'];
         } else {
-            $name        = json_decode($this->filesystem->get($manifestPath))->name;
-            $componentId = $this->components[$name];
+            $name        = json_decode($this->filesystem->get($composerPath))->name;
+            $componentId = $this->components[str_replace('antaresproject/', '', $name)];
         }
         return $componentId;
     }
@@ -285,7 +292,6 @@ class SyncCommand extends Command
                 continue;
             }
             $namespace = $this->readNamespace($file->getContents());
-
             if (is_null($namespace)) {
                 continue;
             }
@@ -297,6 +303,8 @@ class SyncCommand extends Command
                 }
                 $reflectionClass = new ReflectionClass($className);
                 $parent          = $reflectionClass->getParentClass();
+
+
                 if (is_bool($parent)) {
                     continue;
                 }

@@ -62,6 +62,7 @@ class AutomationServiceProvider extends ModuleServiceProvider
      */
     public function bootExtensionComponents()
     {
+
         $this->listenEvents();
         $this->attachMenu(AutomationLogsBreadcrumbMenu::class);
     }
@@ -80,9 +81,12 @@ class AutomationServiceProvider extends ModuleServiceProvider
      */
     protected function listenEvents()
     {
-        $this->app->make('events')->listen('after.install.components/automation', function() {
-            $this->app->make('antares.watchdog')->up('automation:start');
-            $job = $this->app->make(SyncAutomation::class)->onQueue('install');
+
+        listen('after.activated.antaresproject/component-automation', function() {
+            $watchDog = $this->app->make('antares.watchdog');
+            $watchDog->up('automation:start');
+            $watchDog->up('queue:start');
+            $job      = $this->app->make(SyncAutomation::class)->onQueue('install');
             return $this->dispatch($job);
         });
     }
