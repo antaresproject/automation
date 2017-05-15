@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares Project package.
  *
  * NOTICE OF LICENSE
@@ -18,15 +18,13 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Automation\Http\Handlers\TestCase;
 
 use Antares\Automation\Http\Handlers\AutomationPane;
 use Antares\Testbench\TestCase;
-use Antares\Widget\Handlers\Menu;
-use Antares\Widget\Handlers\Pane;
-use Antares\Widget\WidgetManager;
+use Antares\UI\Handlers\Menu;
+use Antares\UI\Handlers\Pane;
+use Antares\UI\WidgetManager;
 use Illuminate\Contracts\View\Factory;
 use Mockery as m;
 
