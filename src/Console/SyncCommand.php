@@ -235,8 +235,11 @@ class SyncCommand extends Command
         $extensions = app('antares.extension')->getAvailableExtensions();
 
         $commands = $this->findJobs(base_path('src/core'));
-
+        $match    = base_path('src/modules');
         foreach ($extensions as $extension) {
+            if (!starts_with($extension->getPath(), $match)) {
+                continue;
+            }
             if (!$extension->isActivated()) {
                 continue;
             }
