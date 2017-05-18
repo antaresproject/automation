@@ -9,6 +9,14 @@
 [![GitHub stars](https://img.shields.io/github/stars/antaresproject/project.svg)](https://github.com/antaresproject/project/stargazers)
 [![GitHub license](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://raw.githubusercontent.com/antaresproject/project/master/LICENSE)
 
+
+Automation is a module used to executte cyclic operations based on [laravel task scheduler](https://laravel.com/docs/5.4/scheduling). 
+It serves as a replacement for setting up your own cron jobs to make it easier to manage. 
+It provides an intuitive control  interface on the admin level. 
+Automation can run tasks every few minutes, hourly, daily or weekly - depending how you set it up. 
+Scheduled data is stored in the system database.
+
+
 ## Documentation
 
 Antares Automation Component documentation can be found at [antaresproject.io/docs/core_modules/automation](http://antaresproject.io/docs/site/core_modules/automation/).
