@@ -85,7 +85,6 @@ class AutomationServiceProvider extends ModuleServiceProvider
         listen('after.activated.antaresproject/component-automation', function() {
             $watchDog = $this->app->make('antares.watchdog');
             $watchDog->up('automation:start');
-            $watchDog->up('queue:start');
             $job      = $this->app->make(SyncAutomation::class)->onQueue('install');
             return $this->dispatch($job);
         });
