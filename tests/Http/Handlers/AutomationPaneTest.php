@@ -1,7 +1,7 @@
 <?php
 
-/**
- * Part of the Antares Project package.
+/**
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,19 +14,17 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Http\Handlers\TestCase;
 
 use Antares\Automation\Http\Handlers\AutomationPane;
 use Antares\Testbench\TestCase;
-use Antares\Widget\Handlers\Menu;
-use Antares\Widget\Handlers\Pane;
-use Antares\Widget\WidgetManager;
+use Antares\UI\Handlers\Menu;
+use Antares\UI\Handlers\Pane;
+use Antares\UI\WidgetManager;
 use Illuminate\Contracts\View\Factory;
 use Mockery as m;
 

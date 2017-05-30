@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,7 +14,7 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
 
@@ -62,6 +62,7 @@ class AutomationServiceProvider extends ModuleServiceProvider
      */
     public function bootExtensionComponents()
     {
+
         $this->listenEvents();
         $this->attachMenu(AutomationLogsBreadcrumbMenu::class);
     }
@@ -80,9 +81,11 @@ class AutomationServiceProvider extends ModuleServiceProvider
      */
     protected function listenEvents()
     {
-        $this->app->make('events')->listen('after.install.components/automation', function() {
-            $this->app->make('antares.watchdog')->up('automation:start');
-            $job = $this->app->make(SyncAutomation::class)->onQueue('install');
+
+        listen('after.activated.antaresproject/component-automation', function() {
+            $watchDog = $this->app->make('antares.watchdog');
+            $watchDog->up('automation:start');
+            $job      = $this->app->make(SyncAutomation::class)->onQueue('install');
             return $this->dispatch($job);
         });
     }

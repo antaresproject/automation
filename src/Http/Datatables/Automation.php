@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Part of the Antares Project package.
+ * Part of the Antares package.
  *
  * NOTICE OF LICENSE
  *
@@ -14,7 +14,7 @@
  * @version    0.9.0
  * @author     Antares Team
  * @license    BSD License (3-clause)
- * @copyright  (c) 2017, Antares Project
+ * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
 
@@ -195,7 +195,7 @@ class Automation extends DataTable
                         ->addColumn(['data' => 'last_run_result', 'name' => 'last_run_result', 'title' => trans('antares/automation::messages.datatable.headers.last_run_result')])
                         ->addAction(['name' => 'edit', 'title' => '', 'class' => 'mass-actions dt-actions', 'orderable' => false, 'searchable' => false])
                         ->setDeferedData()
-                        ->addGroupSelect($this->categories(), 2, $this->findCustomOptionId(), ['data-prefix' => trans('antares/automation::messages.datatable.select_category')]);
+                        ->addGroupSelect($this->categories(), 2, 'all', ['data-prefix' => trans('antares/automation::messages.datatable.select_category')]);
     }
 
     /**
@@ -208,10 +208,6 @@ class Automation extends DataTable
 
         $options = JobsCategory::all(['id', 'title'])->pluck('title', 'id');
         return $options->prepend(trans('antares/automation::messages.datatable.select_all'), 'all');
-
-//        $defaultSelected = $this->findCustomOptionId();
-//        return 
-//        return Form::select('category', ['all' => trans('antares/automation::messages.datatable.select_all')] + $options->toArray(), $defaultSelected, ['data-prefix' => trans('antares/automation::messages.datatable.select_category'), 'data-selectAR--mdl-big' => "true", 'class' => 'automation-select-category select2--prefix']);
     }
 
     /**

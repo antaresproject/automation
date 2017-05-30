@@ -1,11 +1,41 @@
-# Change Log
+# Changelog
 
-This project follows [Semantic Versioning](CONTRIBUTING.md).
+### [0.9.2]
 
-## Proposals
+##### New
 
-We do not give estimated times for completion on `Accepted` Proposals.
+* Laravel 5.4 integration.
+* Laravel 5.3 integration.
+* New composer.json structure.
+* New composer.json structure.
+* Session datatbales and ordering.
 
----
+##### Changes
 
-#INITIAL ANTARES RELEASE
+* Readme.md structure change.
+* Change automation synchronization command.
+* Added homepage and friendly names to components.
+* Unit tests refactoring.
+* Unit tests refactoring.
+* Refactoring unit tests.
+* Unit tests refactoring after laravel 5.4 release.
+* Updated ACL file.
+* Old extension finder class.
+* Remove unused scripts.
+* Main menu title.
+
+##### Fixes
+
+* Automation ordering.
+* Automation timeout queue process.
+
+##### Other
+
+* Update composer.json.
+* Fix for composer handler.
+* Update composer.json.
+* Changed project name on composer.
+* INITIAL ANTARES COMMIT.
+* Initial commit.
+
+
