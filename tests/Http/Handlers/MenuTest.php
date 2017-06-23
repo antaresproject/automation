@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Http\Handlers\TestCase;
 
@@ -62,9 +60,9 @@ class MenuTest extends TestCase
         $app  = m::mock('Illuminate\Container\Container');
         $menu = m::mock(Menu::class);
         $app->shouldReceive('make')->once()->with('antares.platform.menu')->andReturn($menu);
-        $menu->shouldReceive('has')->once()->with('extensions')->andReturn(true);
+        $menu->shouldReceive('has')->once()->with('settings.ban_management')->andReturn(true);
         $stub = new AutomationMenu($app);
-        $this->assertEquals('^:settings', $stub->getPositionAttribute());
+        $this->assertEquals('>:settings.ban_management', $stub->getPositionAttribute());
     }
 
     public function testItShouldNextToHomeGivenExtensionIsntAvailable()
@@ -72,9 +70,11 @@ class MenuTest extends TestCase
         $app  = m::mock('Illuminate\Container\Container');
         $menu = m::mock(Menu::class);
         $app->shouldReceive('make')->once()->with('antares.platform.menu')->andReturn($menu);
-        $menu->shouldReceive('has')->once()->with('extensions')->andReturn(false);
+        $menu->shouldReceive('has')->once()->with('settings.ban_management')->andReturn(false);
+
         $stub = new AutomationMenu($app);
-        $this->assertEquals('>:home', $stub->getPositionAttribute());
+
+        $this->assertEquals('>:settings.general-config', $stub->getPositionAttribute());
     }
 
     /**

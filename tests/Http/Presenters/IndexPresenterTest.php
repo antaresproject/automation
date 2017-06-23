@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares package.
  *
  * NOTICE OF LICENSE
@@ -18,8 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
 namespace Antares\Automation\Http\Presenters\TestCase;
 
 use Antares\Automation\Http\Presenters\IndexPresenter;
@@ -32,8 +30,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Mockery as m;
-use function base_path;
-use function url;
 
 class IndexPresenterTest extends TestCase
 {
@@ -46,12 +42,12 @@ class IndexPresenterTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $htmlBuilder  = $this->app->make('Collective\Html\HtmlBuilder');
-        $formBuilder  = $this->app->make('Antares\Html\Support\FormBuilder');
-        $urlGenerator = url();
-        $builder      = new Builder($this->app['config'], $this->app['view'], $htmlBuilder, $urlGenerator, $formBuilder);
-        $this->stub   = new IndexPresenter($this->app, $builder);
-        $this->app['view']->addNamespace('antares/automation', realpath(base_path() . '../../../../components/automation/resources/views'));
+        $breadcrumb = $this->app->make(\Antares\Automation\Http\Breadcrumb\Breadcrumb::class);
+        $datatables = $this->app->make(\Antares\Automation\Http\Datatables\Automation::class);
+        $details    = $this->app->make(\Antares\Automation\Http\Datatables\AutomationDetails::class);
+
+        $this->stub = new IndexPresenter($this->app, $breadcrumb, $datatables, $details);
+        $this->app['view']->addNamespace('antares/automation', realpath(getcwd() . '/resources/views'));
     }
 
     protected function getModel()
@@ -125,14 +121,6 @@ class IndexPresenterTest extends TestCase
     public function testTable()
     {
         $this->assertInstanceOf(View::class, $this->stub->table($this->getBuilder()));
-    }
-
-    /**
-     * Tests Antares\Automation\Http\Presenters\IndexPresenter::tableJson
-     */
-    public function testTableJson()
-    {
-        $this->assertInstanceOf(JsonResponse::class, $this->stub->tableJson($this->getBuilder()));
     }
 
     /**
