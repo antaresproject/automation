@@ -1,4 +1,16 @@
-<div class="ddown ddown--filter-edit ddown--left mr24 ddown__shorty ">
+<div class="swiper-slide">
+    <div data-type="status" class="filter filter-type--badge antares-dropjs-filter">
+        <div data-filter-value="Status" class="card-filter__sgl ddown__init dropjs-target"><span>Active</span><i
+                class="zmdi zmdi-close filter-close"></i></div>
+        <div class="dropjs-wrapper">
+            <div data-type="status" class="filter-content filter--badge"><span>Filter By Status</span>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{#<div class="ddown ddown--filter-edit ddown--left mr24 ddown__shorty ">
     <div class = "card-filter__sgl ddown__init datatables-card-filter" column="{{ column }}" data-classname="{{classname|raw}}">
         <span>{{ name|raw }}</span>
         {% if name|length>0 %}
@@ -14,4 +26,5 @@
             {{ subview|raw }}                                  
         </ul>
     </div>
-</div>
+</div>#}
+

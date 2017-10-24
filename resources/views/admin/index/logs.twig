@@ -1,11 +1,11 @@
-{% extends "antares/foundation::layouts.antares.index" %}
+{% extends "antares/foundation::layouts.antares.datatable" %}
 {% block content %} 
     {{ dataTable.scripts()|raw }}   
     {{ dataTable.tableDeferred()|raw }}
     <div class="delete-logs-modal w400" style="display:none;" data-title="{{ trans('antares/automation::messages.deleting_logs_modal_title') }}">
         <div class="modal__content">
             <div class="col-group">
-                <div class="col-16">
+                <div class="col-24">
                     <form action="{{ handles('antares::automation/logs/delete') }}" method="POST" >
                         <div class="form-block">
                             <label class="form-block__name">

@@ -40,7 +40,7 @@ $(document).ready(function () {
                 classname = filterContainer.find('input.classname').attr('value');
                 column = filterContainer.find('.filter-group-column').val();
             }
-            overlay.LoadingOverlay('show');
+            //overlay.LoadingOverlay('show');
             if (!$('#filter-save-url').length) {
                 return false;
             }
@@ -65,9 +65,9 @@ $(document).ready(function () {
                     if (table !== null) {
                         table.dataTable().api().draw();
                     }
-                    overlay.LoadingOverlay('hide');
+                    //overlay.LoadingOverlay('hide');
                     if (logs.length) {
-                        logs.LoadingOverlay('show');
+                        //logs.LoadingOverlay('show');
                         var url = logs.find('.card-ctrls').data('url');
 
                         $.ajax({
@@ -83,7 +83,7 @@ $(document).ready(function () {
                                     }
                                 }
 
-                                logs.LoadingOverlay('hide');
+                                //logs.LoadingOverlay('hide');
                                 bindSelect($('.filter-container select[name=' + column + ']'));
                             }
                         })

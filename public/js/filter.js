@@ -15,7 +15,7 @@ $(document).ready(function () {
             return false;
         }
 
-        overlayed.LoadingOverlay('show');
+        //overlayed.LoadingOverlay('show');
         $.ajax({
             url: $('input.datatables-filter-store').val(),
             data: {
@@ -30,11 +30,11 @@ $(document).ready(function () {
             type: 'POST',
             success: function (response) {
                 $('.card-filter').append(response);
-                overlayed.LoadingOverlay('hide');
+                //overlayed.LoadingOverlay('hide');
                 table.dataTable().api().draw();
             },
             error: function (error) {
-                overlayed.LoadingOverlay('hide');
+                //overlayed.LoadingOverlay('hide');
             }
         });
         return false;
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
                 },
                 complete: function () {
-                    $('.card-filter').LoadingOverlay('hide');
+                    //$('.card-filter').LoadingOverlay('hide');
                     if ($('div[column=' + column + '] span').text().length <= 0) {
                         $('div[column=' + column + '] i').trigger('click');
                     }

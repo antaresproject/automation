@@ -69,7 +69,7 @@ DateRangeFilter.prototype.buttonsBinder = {
             if (classname === undefined || column === undefined) {
                 return false;
             }
-            tableContainer.LoadingOverlay('show');
+            //tableContainer.LoadingOverlay('show');
             $.ajax({
                 url: $('#filter-save-url').data('url'),
                 type: 'POST',
@@ -87,7 +87,7 @@ DateRangeFilter.prototype.buttonsBinder = {
                     var container = $('.card-filter div[column=' + column + ']').parent();
                     DateRangeFilter.dateRangeBinder.bindDateRangePicker(container.find('input:text'));
                     DateRangeFilter.buttonsBinder.bindButton(container.find('a.add-daterange-button'));
-                    tableContainer.LoadingOverlay('hide');
+                    //tableContainer.LoadingOverlay('hide');
                 }
             });
 
