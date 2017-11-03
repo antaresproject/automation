@@ -1,11 +1,56 @@
-$(document).ready(function () {
-    $('.main-content').on('click', '.datatable-disable-selected-filter', function (e) {
+ready('.datatable-disable-selected-filter', function (element) {
+    $(element).click(function (e) {
         e.preventDefault();
-        var handler = $(this).parent(), column = handler.closest('.card-filter').find('.datatables-card-filter').attr('column'), select = $('.filter-container select[name=' + column + ']');
-        if (select.length > 0) {
-            select.val(null).trigger("change");
+        var overlayed = $(this).closest('.tbl-c');
+        if (!overlayed.length) {
+            overlayed = $(this).closest('.card');
         }
+
+        var element = $(this), handler = element.parent(), table = element.parents('.tbl-c').find('[data-table-init]'), container = element.closest('.ddown--filter-edit');
+        var url = $(this).data('url') !== undefined && $(this).data('url').length > 0 ? $(this).data('url') : $('input.datatables-filter-destroy').val();
+
+        $.ajax({
+            url: url,
+            data: {
+                route: handler.attr('route'),
+                params: {
+                    column: handler.attr('column'),
+                    value: handler.attr('value')
+                }
+            },
+            type: 'POST',
+            success: function (response) {
+                var logs = handler.closest('.card--logs');
+                container.remove();
+                table.dataTable().api().draw();
+                $('.filter-container select').removeAttr('disabled');
+
+                if (logs.length) {
+                    var url = logs.find('.card-ctrls').data('url');
+                    $.ajax({
+                        url: url,
+                        success: function (response) {
+                            var childrens = $(response).closest('.widget-ajax-response').children().length;
+                            if (childrens > 1) {
+                                logs.closest('.grid-stack-item-content').find('.card__content').html($(response).closest('.widget-ajax-response').html());
+                            } else {
+                                var classname = $(response).attr('class').split(' ')[0], container = logs.closest('.' + classname);
+                                if (container.length > 0) {
+                                    container.html($(response).html());
+                                }
+                            }
+                            $('.filter-container select[name=' + handler.attr('column') + ']').select2();
+                        }
+                    })
+                }
+            }
+        });
+        window.antaresEvents.emit('filters.delete', this);
+        return false;
     });
+});
+
+$(document).ready(function () {
     ready('.add-select-filter-button', function (element) {
         bindButton(element);
     });
@@ -14,36 +59,44 @@ $(document).ready(function () {
         $(element).on("change", function (evt) {
             $('.filter-container select[name=' + column + ']').val($(this).val()).trigger("change");
         });
+
         bindSelect($(element));
     });
     function bindButton(button) {
         $(button).on('click', function (e) {
+            var container = $(button).closest('.filter-container');
+            if (container.length > 0) {
+                var column = container.find('.filter-config').attr('column');
+                if ($('.swiper-container .dropjs-target[column="' + column + '"]').length > 0) {
+                    return false;
+                }
+            }
+
             var element = $(this);
             e.preventDefault();
             var overlay = $(this).closest('.grid-stack-item-content'), table = null;
+
             if (overlay.length <= 0) {
                 overlay = $(this).closest('.tbl-c');
-                var table = overlay.find('[data-table-init]');
             }
+            table = overlay.find('[data-table-init]');
 
-            var handler = $(this), filterContainer = null, classname = null, column = null, select = $(this).closest('.filter-container').find('select');
-            if (!select.length) {
-                select = $(this).closest('.card-filter').find('select');
-            }
+            var handler = $(this), filterContainer = null, classname = null, column = null, select = $(this).closest('.filter-content').find('select');
+
             var values = select.val();
-
-            if ($(this).closest('.card-filter').length > 0) {
-                classname = handler.closest('.card-filter').find('.datatables-card-filter').data('classname');
-                column = handler.closest('.card-filter').find('.datatables-card-filter').attr('column');
+            if ($(this).closest('.filter-config').length > 0) {
+                classname = handler.closest('.filter-config').data('classname');
+                column = handler.closest('.filter-config').attr('column');
             } else {
                 filterContainer = element.last().closest('.filter-container');
                 classname = filterContainer.find('input.classname').attr('value');
                 column = filterContainer.find('.filter-group-column').val();
             }
-            //overlay.LoadingOverlay('show');
             if (!$('#filter-save-url').length) {
                 return false;
             }
+
+
             $.ajax({
                 url: $('#filter-save-url').data('url'),
                 type: 'POST',
@@ -55,39 +108,50 @@ $(document).ready(function () {
                     }
                 },
                 success: function (response) {
-                    var logs = element.closest('.card--logs');
-                    $('.card-filter div[column=' + column + ']').parent().remove();
-                    $('.card-filter').append(response);
-                    bindSelect($('.card-filter div[column=' + column + ']').parent().find('select'));
-                    if ($('div[column=' + column + '] span').text().length <= 0) {
-                        $('div[column=' + column + '] i').trigger('click');
+                    if (handler.closest('.drop-content').length) {
+                        window.antaresEvents.emit('filters.update', element, table, response);
+                    } else {
+                        window.antaresEvents.emit('filters.append', element, table, response);
                     }
-                    if (table !== null) {
-                        table.dataTable().api().draw();
-                    }
-                    //overlay.LoadingOverlay('hide');
-                    if (logs.length) {
-                        //logs.LoadingOverlay('show');
-                        var url = logs.find('.card-ctrls').data('url');
 
-                        $.ajax({
-                            url: url,
-                            success: function (response) {
-                                var childrens = $(response).closest('.widget-ajax-response').children().length;
-                                if (childrens > 1) {
-                                    element.closest('.grid-stack-item-content').find('.card__content').html($(response).closest('.widget-ajax-response').html());
-                                } else {
-                                    var classname = $(response).attr('class').split(' ')[0], container = logs.closest('.' + classname);
-                                    if (container.length > 0) {
-                                        container.html($(response).html());
-                                    }
-                                }
 
-                                //logs.LoadingOverlay('hide');
-                                bindSelect($('.filter-container select[name=' + column + ']'));
-                            }
-                        })
-                    }
+//                    var logs = element.closest('.card--logs');
+//
+//                    $('.card-filter div[column=' + column + ']').parent().remove();
+//                    $('.card-filter').append(response);
+//                    
+//
+//                    console.log($('.card-filter'));
+//                    return false;
+//
+//                    bindSelect($('.card-filter div[column=' + column + ']').parent().find('select'));
+//                    if ($('div[column=' + column + '] span').text().length <= 0) {
+//                        $('div[column=' + column + '] i').trigger('click');
+//                    }
+//                    if (table !== null) {
+//                        table.dataTable().api().draw();
+//                    }
+
+//                    if (logs.length) {
+//
+//                        var url = logs.find('.card-ctrls').data('url');
+//                        $.ajax({
+//                            url: url,
+//                            success: function (response) {
+//                                var childrens = $(response).closest('.widget-ajax-response').children().length;
+//                                if (childrens > 1) {
+//                                    element.closest('.grid-stack-item-content').find('.card__content').html($(response).closest('.widget-ajax-response').html());
+//                                } else {
+//                                    var classname = $(response).attr('class').split(' ')[0], container = logs.closest('.' + classname);
+//                                    if (container.length > 0) {
+//                                        container.html($(response).html());
+//                                    }
+//                                }
+//
+//                                bindSelect($('.filter-container select[name=' + column + ']'));
+//                            }
+//                        })
+//                    }
                 },
             });
 
