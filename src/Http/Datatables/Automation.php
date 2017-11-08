@@ -53,7 +53,7 @@ class Automation extends DataTable
 
         listen('datatables.order.title', function($query, $direction) {
             return $query->leftJoin('tbl_components', 'tbl_jobs.component_id', '=', 'tbl_components.id')
-                            ->orderBy('tbl_components.full_name', $direction);
+                            ->orderBy('tbl_components.name', $direction);
         });
         listen('datatables.order.last_run_result', function($query, $direction) {
             return $query->leftJoin('tbl_job_results', 'tbl_jobs.id', '=', 'tbl_job_results.job_id')
@@ -123,7 +123,7 @@ class Automation extends DataTable
                                     $query
                                     ->leftJoin('tbl_components', 'tbl_jobs.component_id', '=', 'tbl_components.id')
                                     ->leftJoin('tbl_jobs_category', 'tbl_jobs.category_id', '=', 'tbl_jobs_category.id')
-                                    ->whereRaw("(tbl_jobs.name like '%$keyword%' or tbl_jobs.value like '%$keyword%' or tbl_components.full_name like '%$keyword%' or tbl_jobs_category.title like '%$keyword%')");
+                                    ->whereRaw("(tbl_jobs.name like '%$keyword%' or tbl_jobs.value like '%$keyword%' or tbl_components.name like '%$keyword%' or tbl_jobs_category.title like '%$keyword%')");
                                     break;
                             }
                         })
@@ -133,7 +133,7 @@ class Automation extends DataTable
                             }
                         })
                         ->editColumn('title', function ($model) {
-                            $name = $model->component->full_name;
+                            $name = $model->component->name;
                             return ($name ? $name . ' : ' : '') . $model->value['title'];
                         })
                         ->editColumn('description', function ($model) {
@@ -195,7 +195,12 @@ class Automation extends DataTable
                         ->addColumn(['data' => 'last_run_result', 'name' => 'last_run_result', 'title' => trans('antares/automation::messages.datatable.headers.last_run_result')])
                         ->addAction(['name' => 'edit', 'title' => '', 'class' => 'mass-actions dt-actions', 'orderable' => false, 'searchable' => false])
                         ->setDeferedData()
-                        ->addGroupSelect($this->categories(), 2, 'all', ['data-prefix' => trans('antares/automation::messages.datatable.select_category')]);
+                        ->addGroupSelect($this->categories(), 2, 'all', ['data-prefix' => trans('antares/automation::messages.datatable.select_category')])
+                        ->parameters([
+                            'aoColumnDefs' => [
+                                ['width' => '5%', 'targets' => 0],
+                            ]
+        ]);
     }
 
     /**

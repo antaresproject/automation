@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Automation
- * @version    0.9.0
+ * @version    0.9.2
  * @author     Antares Team
  * @license    BSD License (3-clause)
  * @copyright  (c) 2017, Antares
@@ -51,7 +51,7 @@ class Breadcrumb
 
         Breadcrumbs::register('automation-' . $name, function($breadcrumbs) use($model) {
             $breadcrumbs->parent('automations');
-            $name = $model->exists ? 'Automation edit ' . $model->name : 'Automation create';
+            $name = $model->exists ? 'Edit: #' . $model->id . ', ' . $model->name : 'Automation create';
             $breadcrumbs->push($name);
         });
         view()->share('breadcrumbs', Breadcrumbs::render('automation-' . $name));
