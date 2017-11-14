@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Automation
- * @version    0.9.0
+ * @version    0.9.2
  * @author     Antares Team
  * @license    BSD License (3-clause)
  * @copyright  (c) 2017, Antares
@@ -20,6 +20,7 @@
 
 namespace Antares\Automation;
 
+use Antares\Automation\Http\Handlers\AutomationLogsShowBreadcrumbMenu;
 use Antares\Automation\Http\Handlers\AutomationLogsBreadcrumbMenu;
 use Antares\Foundation\Support\Providers\ModuleServiceProvider;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -65,6 +66,7 @@ class AutomationServiceProvider extends ModuleServiceProvider
 
         $this->listenEvents();
         $this->attachMenu(AutomationLogsBreadcrumbMenu::class);
+        $this->attachMenu(AutomationLogsShowBreadcrumbMenu::class);
     }
 
     /**

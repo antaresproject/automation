@@ -104,7 +104,7 @@ class IndexPresenter implements PresenterContract
      */
     public function tableShow(Model $model)
     {
-        $this->breadcrumb->onShow($model);
+        $this->breadcrumb->onInit(['force_link' => true]);
         return $this->automationDetailsDatatable->render('antares/automation::admin.index.show');
     }
 

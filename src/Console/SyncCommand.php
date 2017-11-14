@@ -175,6 +175,7 @@ class SyncCommand extends Command
                 continue;
             }
             array_push($return, $name);
+            Jobs::query()->where('name', $name)->delete();
             $model = Jobs::query()->firstOrNew([
                 'component_id' => $componentId,
                 'category_id'  => $categoryId,

@@ -27,13 +27,15 @@ class Breadcrumb
 {
 
     /**
-     * on init automation
+     * On init automation
+     * 
+     * @param array $params
      */
-    public function onInit()
+    public function onInit($params = [])
     {
         if (!Breadcrumbs::exists('automations')) {
-            Breadcrumbs::register('automations', function($breadcrumbs) {
-                $breadcrumbs->push(trans('antares/automation::messages.automation_log'), handles('antares::automation/index'));
+            Breadcrumbs::register('automations', function($breadcrumbs) use($params) {
+                $breadcrumbs->push(trans('antares/automation::messages.automation_log'), handles('antares::automation/index'), $params);
             });
             view()->share('breadcrumbs', Breadcrumbs::render('automations'));
         }
@@ -51,10 +53,19 @@ class Breadcrumb
 
         Breadcrumbs::register('automation-' . $name, function($breadcrumbs) use($model) {
             $breadcrumbs->parent('automations');
-            $name = $model->exists ? 'Edit: #' . $model->id . ', ' . $model->name : 'Automation create';
-            $breadcrumbs->push($name);
+            $name = $model->exists ? '#' . $model->id . ', ' . $model->name : 'Automation create';
+            $url  = ($model->exists) ? handles('antares::automation/show/' . $model->id) : null;
+            $breadcrumbs->push($name, $url);
         });
-        view()->share('breadcrumbs', Breadcrumbs::render('automation-' . $name));
+        if ($model->exists) {
+            Breadcrumbs::register('edit-' . $name, function($breadcrumbs) use($name) {
+                $breadcrumbs->parent('automation-' . $name);
+                $breadcrumbs->push('Edit');
+            });
+            view()->share('breadcrumbs', Breadcrumbs::render('edit-' . $name));
+        } else {
+            view()->share('breadcrumbs', Breadcrumbs::render('automation-' . $name));
+        }
     }
 
     /**
@@ -66,21 +77,6 @@ class Breadcrumb
             $breadcrumbs->push('Automation', handles('antares::automation/index'));
         });
         view()->share('breadcrumbs', Breadcrumbs::render('automation'));
-    }
-
-    /**
-     * on shows automation details
-     * 
-     * @param Model $model
-     */
-    public function onShow(Model $model)
-    {
-        $this->onInit();
-        Breadcrumbs::register('automation-details-' . $model->id, function($breadcrumbs) use($model) {
-            $breadcrumbs->parent('automations');
-            $breadcrumbs->push('Automation details ' . $model->name, handles('antares::automation/show/' . $model->id));
-        });
-        view()->share('breadcrumbs', Breadcrumbs::render('automation-details-' . $model->id));
     }
 
     /**
