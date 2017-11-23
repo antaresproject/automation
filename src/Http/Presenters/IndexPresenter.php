@@ -93,6 +93,7 @@ class IndexPresenter implements PresenterContract
      */
     public function show($eloquent)
     {
+
         return $this->view('show', ['model' => $eloquent]);
     }
 

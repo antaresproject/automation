@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Http\Datatables;
 
@@ -59,6 +57,9 @@ class AutomationDetails extends DataTable
                                     '<span class="label-basic label-basic--success">' . trans('Success') . '</span>';
                         })
                         ->editColumn('return', function ($model) {
+                            if (!$model->return) {
+                                return '---';
+                            }
                             return '<pre>' . $model->return . '</pre>';
                         })->editColumn('runtime', function ($model) {
                             return $model->runtime . ' s';
@@ -74,13 +75,19 @@ class AutomationDetails extends DataTable
      */
     public function html()
     {
+
         return $this->setName('Automation Details List')
                         ->addColumn(['data' => 'id', 'name' => 'id', 'title' => trans('Id')])
                         ->addColumn(['data' => 'has_error', 'name' => 'has_error', 'title' => trans('Status')])
                         ->addColumn(['data' => 'return', 'name' => 'return', 'title' => trans('Result')])
                         ->addColumn(['data' => 'runtime', 'name' => 'runtime', 'title' => trans('Runtime')])
                         ->addColumn(['data' => 'created_at', 'name' => 'created_at', 'title' => trans('Executed at')])
-                        ->setDeferedData();
+                        ->setDeferedData()
+                        ->parameters([
+                            'aoColumnDefs' => [
+                                ['width' => '5%', 'targets' => 0],
+                            ]
+        ]);
     }
 
     /**

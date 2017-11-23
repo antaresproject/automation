@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**
  * Part of the Antares package.
  *
  * NOTICE OF LICENSE
@@ -17,8 +17,6 @@
  * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
 
 namespace Antares\Automation\Http\Datatables;
 
@@ -73,7 +71,10 @@ class AutomationLogs extends DataTable
                         ->editColumn('has_error', $this->getHas_errorValue())
                         ->editColumn('return', function ($model) {
                             $string = $model->return;
-                            $class  = (strlen($string) > 70) ? 'class="dots"' : '';
+                            if (!$string) {
+                                return '---';
+                            }
+                            $class = (strlen($string) > 70) ? 'class="dots"' : '';
                             return '<span ' . $class . '>' . $model->return . '</span><div class="hidden" rel="' . $model->id . '"><code>' . $model->return . '</code></div>';
                         })->editColumn('runtime', $this->getRuntimeValue())
                         ->editColumn('created_at', function ($model) {
@@ -135,7 +136,12 @@ class AutomationLogs extends DataTable
                         ->addColumn(['data' => 'runtime', 'name' => 'runtime', 'title' => trans('Runtime')])
                         ->addColumn(['data' => 'created_at', 'name' => 'created_at', 'title' => trans('Executed at')])
                         ->addAction(['name' => 'edit', 'title' => '', 'class' => 'mass-actions dt-actions', 'orderable' => false, 'searchable' => false])
-                        ->setDeferedData();
+                        ->setDeferedData()
+                        ->parameters([
+                            'aoColumnDefs' => [
+                                ['width' => '5%', 'targets' => 0],
+                            ]
+        ]);
     }
 
     /**

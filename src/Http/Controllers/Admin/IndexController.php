@@ -70,6 +70,7 @@ class IndexController extends AdminController implements IndexListener
      */
     public function show($id)
     {
+        active_menu_route('automation/index');
         return $this->processor->show($id, $this);
     }
 
